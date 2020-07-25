@@ -1,5 +1,6 @@
 import React from "react";
 import {uid} from "react-uid";
+import Remove from "./ControlItem/Remove";
 
 
 class TodoItem extends React.Component {
@@ -52,8 +53,7 @@ class TodoItem extends React.Component {
                         onKeyDown={this.onSub}
                         onChange={this.onChangeHandler}
                         onBlur={this.OnFcsOutHandler}/>
-                <button className="todo-line">
-                    <i className="fa fa-trash" aria-hidden="true" data-key={this.state.index}/></button>
+                <Remove  parentProps={this.props} first={this.state.first} />
             </div>
         )
     }

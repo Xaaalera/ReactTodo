@@ -10,12 +10,15 @@ class Form extends React.Component {
         }
         this.updateState = this.updateState.bind(this);
         this.setCurrentState = this.setCurrentState.bind(this);
+        this.removeItem = this.removeItem.bind(this);
     }
 
     onSubCycle() {
         let arr = [];
         for (let [index, item] of this.state.formTask) {
-            arr.push(<TodoItem key={index} item={item} index={index}  onFcsOut={this.setCurrentState} onValueAdd={this.updateState}/>)
+            arr.push(<TodoItem key={index} item={item} index={index} onFcsOut={this.setCurrentState}
+                               onRemove={this.removeItem}
+                               onValueAdd={this.updateState}/>)
         }
         return arr;
     }
@@ -34,15 +37,23 @@ class Form extends React.Component {
      * Сбрасываем несохраненное значение
      * @param props
      */
-    setCurrentState(props){
+    setCurrentState(props) {
         return this.state.formTask.get(props.index);
+    }
+
+    removeItem(props) {
+        this.setState(prevState => {
+            let newState = prevState.formTask;
+            newState.delete(props.index);
+            return {formTask: newState};
+        });
     }
 
 
     render() {
         return (
             <ul>
-                <TodoItem onFcsOut={this.setCurrentState} onValueAdd={this.updateState}  />
+                <TodoItem onFcsOut={this.setCurrentState} onValueAdd={this.updateState} onRemove={this.removeItem} first={true} />
                 {this.onSubCycle()}
             </ul>
         )
