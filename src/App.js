@@ -11,6 +11,7 @@ class App extends React.Component {
             task: []
         }
         this.onStateUpdate = this.onStateUpdate.bind(this);
+        this.removeItem = this.removeItem.bind(this);
         this.getItem = this.getItem.bind(this);
     }
     onStateUpdate(props) {
@@ -24,8 +25,11 @@ class App extends React.Component {
             return {task:[...newState]};
         });
     }
-    removeItem(props) {
+    removeItem(index) {
         this.setState(prevState => {
+            let newState = prevState.task;
+            newState  =  newState.filter(item => item.index !== index);
+            return {task:[...newState]}
         });
     }
     getItem(index){
@@ -36,7 +40,7 @@ class App extends React.Component {
 
         const progress = this.state.task.filter(item => !item.done);
         const done = this.state.task.filter(item => item.done);
-        const workInterface = {update: this.onStateUpdate,remove: this.removeItem , getItem : this.getItem};
+        const workInterface = {update: this.onStateUpdate,removeItem: this.removeItem , getItem : this.getItem};
         return (
             <div className="center-todo">
                 <h1 className="todo-header">TODO LIST</h1>

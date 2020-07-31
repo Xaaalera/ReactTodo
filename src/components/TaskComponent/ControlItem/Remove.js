@@ -11,7 +11,8 @@ class Remove extends React.Component {
 
 
     onRemoveThis() {
-        this.props.parentProps.onRemove({index: this.index});
+        // debugger;
+        this.props.worker.removeItem(this.index);
     }
 
     render() {
