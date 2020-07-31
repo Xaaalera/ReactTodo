@@ -7,10 +7,11 @@ class TodoItem extends React.Component {
 
     constructor(props) {
         super(props);
-        this.zeroBlock = uid('zero');
+        this.zeroBlock = 0;
         this.state = {
             value: '',
-            index: this.zeroBlock
+            index: this.zeroBlock,
+            done: 0
         }
         if (props.item) {
             this.state.value = props.item;
@@ -31,17 +32,16 @@ class TodoItem extends React.Component {
         if (e.key !== 'Enter') {
             return null;
         }
-        let idx = e.target.dataset.index;
-        this.props.onValueAdd({index: idx, value: this.state.value});
-        let val = idx === this.zeroBlock ? '' : this.state.value;
+        let index = this.state.index === this.zeroBlock ?uid(this.state.value) : this.state.index;
+        let update = Object.assign({},this.state,{index});
+        this.props.workerParent.update(update);
+        let val = this.state.index === this.zeroBlock ? '' : this.state.value;
         this.setState({value: val})
     }
 
-    OnFcsOutHandler(e) {
-        let idx = e.target.dataset.index;
-        if (idx !== this.zeroBlock) {
-            this.setState({value: this.props.onFcsOut({index: idx})});
-        }
+    OnFcsOutHandler() {
+        let item = this.props.workerParent.getItem(this.state.index);
+        this.setState({value:item? item.value : ''})
     }
 
 
@@ -49,11 +49,10 @@ class TodoItem extends React.Component {
         return (
             <div><input type="text" className="todo-item todo-line"
                         value={this.state.value}
-                        data-index={this.state.index}
                         onKeyDown={this.onSub}
                         onChange={this.onChangeHandler}
                         onBlur={this.OnFcsOutHandler}/>
-                <Remove  parentProps={this.props} first={this.state.first} />
+                <Remove  parentProps={this.props}  worker={this.props.workerParent} first={this.state.first} />
             </div>
         )
     }

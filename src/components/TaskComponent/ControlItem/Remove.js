@@ -16,7 +16,7 @@ class Remove extends React.Component {
 
     render() {
         return (<button className="todo-line" disabled={this.first}>
-            <i className="fa fa-trash" aria-hidden="true"  onClick={this.onRemoveThis} data-key={this.index}/></button>);
+            <i className="fa fa-trash" aria-hidden="true" onClick={this.onRemoveThis} data-key={this.index}/></button>);
     }
 
 }
