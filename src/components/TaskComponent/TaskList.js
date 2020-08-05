@@ -1,15 +1,15 @@
 import React from "react";
-import Control from "./ControlItem/control";
+import Control from "./ControlItem/Control";
 import TodoItem from "./InputType/TodoItem";
 
 class TaskList extends React.Component {
 
     onSubCycle() {
         return this.props.tasks.map(item => {
-            return <div>
-                <TodoItem  key={item.index} value={item.value} index={item.index} handlerUpdate={this.props.onUpd}/>
+            return <div key={item.index}>
+                <TodoItem value={item.value} index={item.index} handlerUpdate={this.props.onUpd}/>
                 <Control index={item.index} onDelete={this.props.onDelete}
-                         onComplete={this.props.onComplete}/>
+                         handlerTaskToProgress={this.props.handlerTaskToProgress}/>
             </div>
         });
     }

@@ -14,17 +14,12 @@ class App extends React.Component {
         this.handleOnUpdate = this.handleOnUpdate.bind(this);
         this.handleCreate = this.handleCreate.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
-        this.handleDone = this.handleDone.bind(this);
+        this.handlerTaskToProgress = this.handlerTaskToProgress.bind(this);
     }
 
     handleOnUpdate(data) {
-        if(!data){
-            return ;
-        }
         this.setState(prevState => {
-            let newState = prevState.task.map(item => {
-                console.log(item);
-                console.log(data);
+            let newState = prevState.tasks.map(item => {
                 if (item.index === data.index) {
                     item = Object.assign({}, item, data)
                 }
@@ -35,9 +30,6 @@ class App extends React.Component {
     }
 
     handleCreate(data) {
-        if (this.getItem(data.index)) {
-            return false;
-        }
         this.setState(prevState => {
             return {tasks: [...prevState.tasks, data]}
         })
@@ -47,15 +39,14 @@ class App extends React.Component {
         this.setState(prevState => {
             let newState = prevState.tasks;
             newState = newState.filter(item => item.index !== index);
-            return {task: [...newState]}
+            return {tasks: [...newState]}
         });
     }
 
-    handleDone(data) {
-        if(!data){
-            return ;
-        }
-        data.done = 1;
+    handlerTaskToProgress(index) {
+        let data = this.getItem(index);
+        data.done = !data.done;
+
         this.handleOnUpdate(data);
     }
 
@@ -68,18 +59,29 @@ class App extends React.Component {
         const progress = this.state.tasks.filter(item => !item.done);
         const done = this.state.tasks.filter(item => item.done);
         return (
-            <div className="center-todo">
-                <h1 className="todo-header">TODO LIST</h1>
-                <Create onCreate={this.handleCreate}/>
-                <div className="Tasks">
-                    <TaskList
-                        tasks={progress}
-                        onDelete={this.handleDelete}
-                        onUpd={this.handleOnUpdate}
-                        onComplete={this.handleDone}
-                    />
+            <div>
+                <div className="center-todo">
+                    <h1 className="todo-header">TODO LIST</h1>
+                    <Create onCreate={this.handleCreate}/>
+                    <div className="Tasks">
+                        <TaskList
+                            tasks={progress}
+                            onDelete={this.handleDelete}
+                            onUpd={this.handleOnUpdate}
+                            handlerTaskToProgress={this.handlerTaskToProgress}
+                        />
+                    </div>
                 </div>
-                <div className="Done">
+                <div className="center-todo">
+                    <h1 className="todo-header">Done List</h1>
+                    <div className="Done">
+                        <TaskList
+                            tasks={done}
+                            onDelete={this.handleDelete}
+                            onUpd={this.handleOnUpdate}
+                            handlerTaskToProgress={this.handlerTaskToProgress}
+                        />
+                    </div>
                 </div>
             </div>
         );

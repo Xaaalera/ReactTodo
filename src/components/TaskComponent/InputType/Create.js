@@ -24,12 +24,13 @@ class Create extends React.Component {
         let index = uid(this.state.value);
         let update = Object.assign({}, this.state, {index});
         this.props.onCreate(update);
+        this.setState({value:''})
     }
 
 
     render() {
         return (
-            <div><input type="text" className="todo-item todo-line" onKeyUp={this.onSub} onChange={this.onChangeHandler}/>
+            <div><input type="text" className="todo-item todo-line" value={this.state.value} onKeyUp={this.onSub} onChange={this.onChangeHandler}/>
             </div>
         )
     }
