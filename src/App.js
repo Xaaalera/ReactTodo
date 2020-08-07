@@ -30,6 +30,9 @@ class App extends React.Component {
     }
 
     handleCreate(data) {
+        if (this.getItem(data.index)) {
+            return false;
+        }
         this.setState(prevState => {
             return {tasks: [...prevState.tasks, data]}
         })
